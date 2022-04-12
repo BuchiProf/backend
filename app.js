@@ -34,6 +34,7 @@ app.post('/api/stuff', (req, res, next) => {
   delete req.body._id;
   //on construit l'objet avec un spread...de la requête
   //on remplace title : req.body.title, etc par ...
+  //new créé automatiquement un mot clé "_id" immuable
   const thing = new Thing({
     ...req.body
   });
@@ -45,10 +46,34 @@ app.post('/api/stuff', (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 });
 
+//route pour afficher l'objet en vente seul
+//route dynamique : on récupère le paramètre id pour l'intégrer à la route
+app.get('/api/stuff/:id', (req, res, next) =>{
+  Thing.findOne({ _id:req.params.id})
+  .then(thing => res.status(200).json(thing))
+  .catch(error => res.status(404).json({error}));
+});
+
+//une route pour modifier un objet dont l'id est dans la requête
+app.put('/api/stuff/:id', (req, res, next) =>{
+  //maj du thing avec 1er param : son id, 2eme param :spread de l'objet modifié qu'il faudra utiliser
+  Thing.updateOne({ _id:req.params.id}, {...req.body,_id:req.params.id})
+  .then(() => res.status(200).json({message:'objet modifié !'}))
+  .catch(error => res.status(400).json({error}));
+});
+
+
+//une route pour supprimer un objet dont l'id est dans la requête
+app.delete('/api/stuff/:id', (req, res, next) =>{
+  //maj du thing avec 1er param : son id, 2eme param :spread de l'objet modifié qu'il faudra utiliser
+  Thing.deleteOne({ _id:req.params.id})
+  .then(() => res.status(200).json({message:'objet supprimé !'}))
+  .catch(error => res.status(400).json({error}));
+});
 
 
 //definition du middleware appelé pour la route vers stuff
-//renvoie en json ce qui est dans la base mongoose (lecture bdd) et un status 200
+//renvoie en json tout ce qui est dans la base mongoose (lecture bdd) et un status 200
 app.get('/api/stuff', (req, res, next) => {
   Thing.find()
     .then(things => res.status(200).json(things))
