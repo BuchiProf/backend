@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 //import du module des routes du fichier stuff.js
 const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -32,6 +33,8 @@ app.use((req, res, next) => {
 
 //dès qu'on a une requete sur api/stuff on va voir les routes stuffRoutes
 app.use('/api/stuff', stuffRoutes);
+//requete sur auth ?
+app.use('/api/auth', userRoutes);
 
 
 
