@@ -1,5 +1,7 @@
 //définitions de tous les middleware appelés dans les routes vers stuff
-
+/*Un fichier de contrôleur exporte des méthodes 
+qui sont ensuite attribuées aux routes pour améliorer 
+la maintenabilité de votre application.*/
 const Thing = require('../models/thing');
 
 //un middelware pour traiter les post (use est en get par défaut)
