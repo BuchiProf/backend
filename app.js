@@ -1,10 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-//import du model de la bdd
-const Thing = require('./models/thing');
-const app = express();
 //import du module des routes du fichier stuff.js
 const stuffRoutes = require('./routes/stuff');
+
+const app = express();
+
 
 
 //connexion à la bdd atlas mongoDB
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 //dès qu'on a une requete sur api/stuff on va voir les routes stuffRoutes
-app.use('api/stuff', stuffRoutes);
+app.use('/api/stuff', stuffRoutes);
 
 
 
