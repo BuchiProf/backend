@@ -2,14 +2,15 @@
 const express = require('express');
 //création de routeurs 
 const router = express.Router();
+//on importe le middleware authentification
+const auth = require('../middleware/auth');
+const stuffCtrl = require('../controllers/stuff');
 
-const stuffCtrl = require('../controllers/stuff')
-
-router.post('/', stuffCtrl.createThing);
-router.get('/:id', stuffCtrl.getOneThing);
-router.put('/:id', stuffCtrl.modifyThing);
-router.delete('/:id', stuffCtrl.deleteThing);
-router.get('/', stuffCtrl.getAllThings);
+router.post('/', auth, stuffCtrl.createThing);
+router.get('/:id', auth, stuffCtrl.getOneThing);
+router.put('/:id', auth, stuffCtrl.modifyThing);
+router.delete('/:id', auth, stuffCtrl.deleteThing);
+router.get('/', auth, stuffCtrl.getAllThings);
 
 
 module.exports = router;
