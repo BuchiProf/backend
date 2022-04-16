@@ -3,6 +3,8 @@
 const User = require('../models/user');
 // algorithem de chiffrement (hashage)
 const bcrypt = require('bcrypt');
+// générateur de token chiffré
+const jwt = require('jsonwebtoken');
 
 exports.signup = (req, res, next) => {
     //chiffrement avec 10 tours d'algo
@@ -32,7 +34,11 @@ exports.login = (req, res, next) => {
                     }
                     res.status(200).json({
                         userId: user._id,   //on stocke _id de la bdd
-                        token: 'TOKEN'      //on stocke le jeton id
+                        token: jwt.sign(    //on créé le jeton avec _id
+                            { userId: user._id },  //on inclus l'_id pour rendre un thing unique
+                            'RANDOM_TOKEN_SECRET',  //on met un mot de passe compliqué
+                            { expiresIn: '24h' }   //on ajoute un délai d'expiration
+                        )
                     });
                 })
                 .catch(error => res.status(500).json({ error }));
